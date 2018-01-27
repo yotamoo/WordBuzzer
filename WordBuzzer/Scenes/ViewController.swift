@@ -112,14 +112,13 @@ private extension ViewController {
         label.font = label.font.withSize(34)
         label.sizeToFit()
         label.layer.anchorPoint.x = 0
-        label.center = CGPoint(x: -label.frame.width,
-                               y: self.centerLabel.frame.midY / 2)
+        let y = self.centerLabel.frame.midY / 2
+        label.center = CGPoint(x: -label.frame.width, y: y)
         self.view.addSubview(label)
         self.wordLabel = label
         
         UIView.animate(withDuration: 4) {
-            label.center = CGPoint(x: self.view.bounds.maxX,
-                                   y: self.centerLabel.frame.midY / 2)
+            label.center = CGPoint(x: self.view.bounds.maxX + label.bounds.size.width / 2, y: y)
         }
         
     }

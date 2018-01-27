@@ -1,14 +1,26 @@
 [
  {
- "text_eng":"1",
- "text_spa":"1"
+ "text_eng":"cat",
+ "text_spa":"gato"
  },
  {
- "text_eng":"2",
- "text_spa":"2"
+ "text_eng":"red",
+ "text_spa":"rojo"
  },
  {
- "text_eng":"3",
- "text_spa":"3"
+ "text_eng":"big",
+ "text_spa":"grande"
+ },
+ {
+ "text_eng":"dog",
+ "text_spa":"perro"
+ },
+ {
+ "text_eng":"tree",
+ "text_spa":"árbol"
+ },
+ {
+ "text_eng":"beach",
+ "text_spa":"playa"
  }
 ]
