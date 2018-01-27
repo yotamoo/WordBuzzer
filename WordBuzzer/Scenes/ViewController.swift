@@ -26,7 +26,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         let bundle = Bundle(for: type(of: self))
-        let wordService = WordFileService(fileName: "simpleWords", bundle: bundle)
+        let wordService = WordFileService(fileName: "words", bundle: bundle)
         let textService = TextService()
         self.viewModel = ViewModel(wordService: wordService,
                                    textService: textService)
@@ -116,6 +116,7 @@ private extension ViewController {
         label.text = word.spanish
         label.font = label.font.withSize(34)
         label.sizeToFit()
+        label.layer.anchorPoint.x = 0
         label.center = CGPoint(x: -label.frame.width,
                                y: self.centerLabel.frame.midY / 2)
         self.view.addSubview(label)
