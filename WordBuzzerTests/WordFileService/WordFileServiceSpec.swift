@@ -31,6 +31,13 @@ class WordFileServiceSpec: QuickSpec {
                 expect(words).to(beNil())
             }
             
+            it("returns an empty array if json has one") {
+                let service = WordFileService(fileName: "Empty", bundle: bundle)
+                let words = service.words
+                expect(words).toNot(beNil())
+                expect(words?.isEmpty).to(beTrue())
+            }
+            
             it("can parse a valid json file") {
                 let service = WordFileService(fileName: "Valid", bundle: bundle)
                 let words = service.words

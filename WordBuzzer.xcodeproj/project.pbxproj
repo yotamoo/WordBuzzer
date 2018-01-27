@@ -24,6 +24,7 @@
 		55BED787201CA25F009A794B /* ViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BED786201CA25F009A794B /* ViewModelSpec.swift */; };
 		55BED789201CA2B5009A794B /* WordServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BED788201CA2B5009A794B /* WordServiceMock.swift */; };
 		55BED78D201CA946009A794B /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BED78C201CA946009A794B /* Array+Extension.swift */; };
+		55BED78F201CB149009A794B /* Empty.json in Resources */ = {isa = PBXBuildFile; fileRef = 55BED78E201CB149009A794B /* Empty.json */; };
 		D1DF9E4468F136565D798954 /* Pods_WordBuzzerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DFEAFD3480E53812B52246 /* Pods_WordBuzzerTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,7 @@
 		55BED786201CA25F009A794B /* ViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelSpec.swift; sourceTree = "<group>"; };
 		55BED788201CA2B5009A794B /* WordServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordServiceMock.swift; sourceTree = "<group>"; };
 		55BED78C201CA946009A794B /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		55BED78E201CB149009A794B /* Empty.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Empty.json; sourceTree = "<group>"; };
 		95DFEAFD3480E53812B52246 /* Pods_WordBuzzerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordBuzzerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1783B231378741E63655E2A /* Pods-WordBuzzerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordBuzzerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WordBuzzerTests/Pods-WordBuzzerTests.release.xcconfig"; sourceTree = "<group>"; };
 		F8A0DE6D7364509CACB81FAD /* Pods-WordBuzzerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordBuzzerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WordBuzzerTests/Pods-WordBuzzerTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			children = (
 				55BED776201C94C4009A794B /* Invalid.json */,
 				55BED772201C905B009A794B /* Valid.json */,
+				55BED78E201CB149009A794B /* Empty.json */,
 				55BED770201C8FF9009A794B /* WordFileServiceSpec.swift */,
 			);
 			path = WordFileService;
@@ -320,6 +323,7 @@
 			files = (
 				55BED773201C905B009A794B /* Valid.json in Resources */,
 				55BED777201C94C4009A794B /* Invalid.json in Resources */,
+				55BED78F201CB149009A794B /* Empty.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

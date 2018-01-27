@@ -7,19 +7,122 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var centerLabel: UILabel!
+    @IBOutlet weak var leftBuzzer: UIButton!
+    @IBOutlet weak var rightBuzzer: UIButton!
+    @IBOutlet weak var leftScoreLabel: UILabel!
+    @IBOutlet weak var rightScoreLabel: UILabel!
+    
+    private var wordLabel: UILabel?
+    private var viewModel: ViewModeling!
+    private let bag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        let bundle = Bundle(for: type(of: self))
+        let wordService = WordFileService(fileName: "simpleWords", bundle: bundle)
+        self.viewModel = ViewModel(wordService: wordService)
+        
+        viewModel
+            .centerLabelText
+            .drive(self.centerLabel.rx.text)
+            .disposed(by: bag)
+        
+        viewModel
+            .startAnimating
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.addWord($0)
+            })
+            .disposed(by: bag)
+        
+        leftBuzzer
+            .rx
+            .tap
+            .bind(to: viewModel.leftBuzzerTapped)
+            .disposed(by: bag)
+        
+        rightBuzzer
+            .rx
+            .tap
+            .bind(to: viewModel.rightBuzzerTapped)
+            .disposed(by: bag)
+        
+        viewModel
+            .leftPlayerScore
+            .drive(self.leftScoreLabel.rx.text)
+            .disposed(by: bag)
+        
+        viewModel
+            .rightPlayerScore
+            .drive(self.rightScoreLabel.rx.text)
+            .disposed(by: bag)
+        
+        viewModel
+            .showAlert
+            .subscribe(onNext: { [weak self] _ in
+                self?.wordLabel?.removeFromSuperview()
+            })
+            .disposed(by: bag)
+        
+        viewModel
+            .showAlert
+            .map { ($0, false) }
+            .bind(to: self.rx.present)
+            .disposed(by: bag)
+        
+        self.rx
+            .viewWillAppear
+            .bind(to: viewModel.viewWillAppear)
+            .disposed(by: bag)
+        
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-
+    
 }
+
+extension Reactive where Base: UIViewController {
+    
+    var present: Binder<(UIViewController, Bool)> {
+        return Binder(self.base) { vc, data in
+            let (destination, animated) = data
+            vc.present(destination, animated: animated, completion: nil)
+        }
+    }
+    
+    var viewWillAppear: Observable<Void> {
+        return self.base
+            .rx
+            .sentMessage(#selector(UIViewController.viewWillAppear(_:)))
+            .map { _ in () }
+    }
+    
+}
+
+private extension ViewController {
+    
+    func addWord(_ word: Word) {
+        
+        print("adding word \(word)")
+        self.wordLabel?.removeFromSuperview()
+        let label = UILabel()
+        label.text = word.spanish
+        label.sizeToFit()
+        label.center = CGPoint(x: -label.frame.width, y: 20)
+        self.view.addSubview(label)
+        self.wordLabel = label
+        
+        UIView.animate(withDuration: 4) {
+            label.center = CGPoint(x: self.view.bounds.maxX, y: 10)
+        }
+        
+    }
+    
+}
+
 

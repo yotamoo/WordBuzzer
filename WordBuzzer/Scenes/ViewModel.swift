@@ -30,9 +30,9 @@ protocol ViewModeling {
     
     // output
     var startAnimating: Observable<Word> { get }
-    var centerLabelText: Driver<String> { get }
-    var leftPlayerScore: Observable<String> { get }
-    var rightPlayerScore: Observable<String> { get }
+    var centerLabelText: Driver<String?> { get }
+    var leftPlayerScore: Driver<String?> { get }
+    var rightPlayerScore: Driver<String?> { get }
     var showAlert: Observable<UIAlertController> { get }
     
 }
@@ -40,14 +40,16 @@ protocol ViewModeling {
 class ViewModel: ViewModeling {
     
     private let bag = DisposeBag()
-    private let leadingScore = BehaviorSubject<Int>(value: 0)
-    private let trailingScore = BehaviorSubject<Int>(value: 0)
+    
+    private let _viewWillAppear = PublishSubject<Void>()
     private let leadingBuzzer = PublishSubject<Void>()
     private let trailingBuzzer = PublishSubject<Void>()
-    private let _showAlert = PublishSubject<UIAlertController>()
+    
     private let _startAnimating = PublishSubject<Word>()
-    private let _centerLabelText = PublishSubject<String>()
-    private let _viewWillAppear = PublishSubject<Void>()
+    private let _centerLabelText = PublishSubject<String?>()
+    private let _leftPlayerScore = BehaviorSubject<Int>(value: 0)
+    private let _rightPlayerScore = BehaviorSubject<Int>(value: 0)
+    private let _showAlert = PublishSubject<UIAlertController>()
     
     // input
     let viewWillAppear: AnyObserver<Void>
@@ -56,9 +58,9 @@ class ViewModel: ViewModeling {
     
     // output
     let startAnimating: Observable<Word>
-    let centerLabelText: Driver<String>
-    let leftPlayerScore: Observable<String>
-    let rightPlayerScore: Observable<String>
+    let centerLabelText: Driver<String?>
+    let leftPlayerScore: Driver<String?>
+    let rightPlayerScore: Driver<String?>
     let showAlert: Observable<UIAlertController>
     
     init(wordService: WordServicing) {
@@ -66,11 +68,20 @@ class ViewModel: ViewModeling {
         self.viewWillAppear = self._viewWillAppear.asObserver()
         self.leftBuzzerTapped = leadingBuzzer.asObserver()
         self.rightBuzzerTapped = trailingBuzzer.asObserver()
-        self.leftPlayerScore = self.leadingScore.asObservable().map { String($0) }
-        self.rightPlayerScore = self.trailingScore.asObservable().map { String($0) }
+        
+        self.leftPlayerScore = self._leftPlayerScore
+            .asObservable()
+            .map { String($0) }
+            .asDriver(onErrorJustReturn: nil)
+        
+        self.rightPlayerScore = self._rightPlayerScore
+            .asObservable()
+            .map { String($0) }
+            .asDriver(onErrorJustReturn: nil)
+        
         self.showAlert = self._showAlert.asObservable()
         self.startAnimating = self._startAnimating.asObservable()
-        self.centerLabelText = self._centerLabelText.asDriver(onErrorDriveWith: Driver.never())
+        self.centerLabelText = self._centerLabelText.asDriver(onErrorJustReturn: nil)
         
         let words = wordService.words
         let wordsObservable = Observable.just(words)
@@ -123,15 +134,17 @@ class ViewModel: ViewModeling {
         let rightWins = win.filter { $0 == Player.trailing }
         
         leftWins
-            .withLatestFrom(leadingScore)
+            .withLatestFrom(_leftPlayerScore)
             .map { $0 + 1 }
-            .bind(to: leadingScore)
+            .startWith(0)
+            .bind(to: _leftPlayerScore)
             .disposed(by: bag)
         
         rightWins
-            .withLatestFrom(trailingScore)
+            .withLatestFrom(_rightPlayerScore)
             .map { $0 + 1 }
-            .bind(to: leadingScore)
+            .startWith(0)
+            .bind(to: _rightPlayerScore)
             .disposed(by: bag)
         
         let anyWins = Observable.merge([leftWins, rightWins])
@@ -178,7 +191,8 @@ class ViewModel: ViewModeling {
             .asObservable()
             .withLatestFrom(wordsObservable)
             .filterNil()
-            .map { $0[0] }
+            .map { $0.random }
+            .filterNil()
             .bind(to: englishSubject)
             .disposed(by: bag)
         
