@@ -7,13 +7,14 @@
 //
 
 import Foundation
+import RxSwift
 @testable import WordBuzzer
 
 class WordServiceMock: WordServicing {
     
     var wordsForTest: [Word]?
-    var words: [Word]? {
-        return self.wordsForTest
+    var words: Observable<[Word]?> {
+        return Observable.just(self.wordsForTest)
     }
     
 }

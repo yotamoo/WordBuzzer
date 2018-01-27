@@ -83,8 +83,7 @@ class ViewModel: ViewModeling {
         self.startAnimating = self._startAnimating.asObservable()
         self.centerLabelText = self._centerLabelText.asDriver(onErrorJustReturn: nil)
         
-        let words = wordService.words
-        let wordsObservable = Observable.just(words)
+        let wordsObservable = wordService.words.filterNil()
         
         let englishSubject = PublishSubject<Word>()
         let english = englishSubject.asObservable()
@@ -100,10 +99,13 @@ class ViewModel: ViewModeling {
         let inRoundSubject = PublishSubject<Bool>()
         let inRound = inRoundSubject.asObservable().startWith(true)
         
-        let spanish = english
-            .flatMapLatest { _ in wordObservable(forWords: words,
-                                                 interval: 3,
-                                                 whileCondition: inRound) }
+        let spanish = english.withLatestFrom(wordsObservable) { ($0, $1) }
+            .flatMapLatest { data -> Observable<Word> in
+                let (selectedWord, words) = data
+                return wordObservable(forWords: words,
+                                      selectedWord: selectedWord,
+                                      interval: 3,
+                                      whileCondition: inRound) }
             .share()
         
         spanish
@@ -130,6 +132,11 @@ class ViewModel: ViewModeling {
             .filter { $0.1 == $0.2 }
             .map { $0.0 }
         
+        win
+            .map { _ in false }
+            .bind(to: inRoundSubject)
+            .disposed(by: bag)
+        
         let leftWins = win.filter { $0 == Player.leading }
         let rightWins = win.filter { $0 == Player.trailing }
         
@@ -148,11 +155,6 @@ class ViewModel: ViewModeling {
             .disposed(by: bag)
         
         let anyWins = Observable.merge([leftWins, rightWins])
-        
-        anyWins
-            .map { _ in false }
-            .bind(to: inRoundSubject)
-            .disposed(by: bag)
         
         let controllerTapped = PublishSubject<Void>()
         anyWins
@@ -181,7 +183,6 @@ class ViewModel: ViewModeling {
         
         controllerTapped
             .withLatestFrom(wordsObservable)
-            .filterNil()
             .map { $0.random }
             .filterNil()
             .bind(to: englishSubject)
@@ -191,7 +192,6 @@ class ViewModel: ViewModeling {
         self._viewWillAppear
             .asObservable()
             .withLatestFrom(wordsObservable)
-            .filterNil()
             .map { $0.random }
             .filterNil()
             .bind(to: englishSubject)
@@ -201,13 +201,15 @@ class ViewModel: ViewModeling {
     
 }
 
-private func wordObservable(forWords words: [Word]?,
+private func wordObservable(forWords words: [Word],
+                            selectedWord: Word,
                             interval: Double,
                             whileCondition: Observable<Bool>) -> Observable<Word> {
     
-    guard let words = words else {
-        return Observable.never()
-    }
+    var words = words
+    let limit = min(10, words.count)
+    let index = limit.radtomUpToValue
+    words.insert(selectedWord, at: index)
     
     return Observable<Int>
         .interval(interval, scheduler: MainScheduler.instance)
@@ -216,5 +218,13 @@ private func wordObservable(forWords words: [Word]?,
         .withLatestFrom(whileCondition) { ($0, $1) }
         .filter { $0.1 }
         .map { $0.0 }
+    
+}
+
+private extension Int {
+    
+    var radtomUpToValue: Int {
+        return Int(arc4random_uniform(UInt32(self)))
+    }
     
 }

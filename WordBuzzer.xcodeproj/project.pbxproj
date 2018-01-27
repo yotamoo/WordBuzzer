@@ -139,10 +139,10 @@
 				55BED779201C95C1009A794B /* Types */,
 				55BED74B201C897B009A794B /* AppDelegate.swift */,
 				55BED752201C897B009A794B /* Assets.xcassets */,
+				55ECC9CC201CCDB100B9C3E7 /* DependencyInjector.swift */,
 				55BED757201C897B009A794B /* Info.plist */,
 				55BED754201C897B009A794B /* LaunchScreen.storyboard */,
 				55BED74F201C897B009A794B /* Main.storyboard */,
-				55ECC9CC201CCDB100B9C3E7 /* DependencyInjector.swift */,
 			);
 			path = WordBuzzer;
 			sourceTree = "<group>";
@@ -150,10 +150,10 @@
 		55BED75F201C897B009A794B /* WordBuzzerTests */ = {
 			isa = PBXGroup;
 			children = (
-				55BED78A201CA2BC009A794B /* Mocks */,
-				55BED77C201C9602009A794B /* WordFileService */,
-				55ECC9CE201CD27900B9C3E7 /* Types */,
 				55BED785201CA249009A794B /* Main Scene */,
+				55BED78A201CA2BC009A794B /* Mocks */,
+				55ECC9CE201CD27900B9C3E7 /* Types */,
+				55BED77C201C9602009A794B /* WordFileService */,
 				55BED762201C897B009A794B /* Info.plist */,
 				55BED76F201C8FF9009A794B /* WordBuzzerTests-Bridging-Header.h */,
 			);
@@ -163,10 +163,10 @@
 		55BED778201C95B0009A794B /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				55BED790201CB6B6009A794B /* TextService.swift */,
 				55BED76B201C8EE4009A794B /* WordFileService.swift */,
 				55BED77E201C97D2009A794B /* simpleWords.json */,
 				55BED77D201C97D2009A794B /* words.json */,
-				55BED790201CB6B6009A794B /* TextService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -202,8 +202,8 @@
 		55BED785201CA249009A794B /* Main Scene */ = {
 			isa = PBXGroup;
 			children = (
-				55BED786201CA25F009A794B /* ViewModelSpec.swift */,
 				55BED792201CC2A0009A794B /* ViewControllerSpec.swift */,
+				55BED786201CA25F009A794B /* ViewModelSpec.swift */,
 			);
 			path = "Main Scene";
 			sourceTree = "<group>";
@@ -211,8 +211,8 @@
 		55BED78A201CA2BC009A794B /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				55BED788201CA2B5009A794B /* WordServiceMock.swift */,
 				55BED794201CC301009A794B /* ViewModelMock.swift */,
+				55BED788201CA2B5009A794B /* WordServiceMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
