@@ -1,0 +1,30 @@
+PODS:
+  - Nimble (7.0.3)
+  - Quick (1.2.0)
+  - Reveal-SDK (13)
+  - RxCocoa (4.1.1):
+    - RxSwift (~> 4.0)
+  - RxOptional (3.3.0):
+    - RxCocoa (~> 4.0)
+    - RxSwift (~> 4.0)
+  - RxSwift (4.1.1)
+
+DEPENDENCIES:
+  - Nimble
+  - Quick
+  - Reveal-SDK
+  - RxCocoa
+  - RxOptional
+  - RxSwift
+
+SPEC CHECKSUMS:
+  Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
+  Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
+  Reveal-SDK: ccc2b0f8014965ea448b7534a7c2c8da232b75e8
+  RxCocoa: fd0862fd2df95fa55562ad28ffd2522c25eb4a85
+  RxOptional: e5448d3e21024489e07c31f6a262f2b50c975367
+  RxSwift: c6e3b1c7b325c7d121cd4327e9d98b7ed746b570
+
+PODFILE CHECKSUM: a7fd8ae332843f8cbc29cce5425a7ce6eee23212
+
+COCOAPODS: 1.4.0
