@@ -27,7 +27,9 @@ class ViewController: UIViewController {
         
         let bundle = Bundle(for: type(of: self))
         let wordService = WordFileService(fileName: "simpleWords", bundle: bundle)
-        self.viewModel = ViewModel(wordService: wordService)
+        let textService = TextService()
+        self.viewModel = ViewModel(wordService: wordService,
+                                   textService: textService)
         
         viewModel
             .centerLabelText
@@ -66,7 +68,7 @@ class ViewController: UIViewController {
         
         viewModel
             .showAlert
-            .subscribe(onNext: { [weak self] _ in
+            .drive(onNext: { [weak self] _ in
                 self?.wordLabel?.removeFromSuperview()
             })
             .disposed(by: bag)
@@ -74,7 +76,7 @@ class ViewController: UIViewController {
         viewModel
             .showAlert
             .map { ($0, false) }
-            .bind(to: self.rx.present)
+            .drive(self.rx.present)
             .disposed(by: bag)
         
         self.rx

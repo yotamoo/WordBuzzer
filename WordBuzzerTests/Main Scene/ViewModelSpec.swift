@@ -21,6 +21,7 @@ class ViewModelSpec: QuickSpec {
             
             let bag = DisposeBag()
             var wordService: WordServiceMock!
+            let textService = TextService()
             var viewModel: ViewModeling!
             
             let wordForString: ((String) -> Word) = { str in
@@ -30,7 +31,8 @@ class ViewModelSpec: QuickSpec {
             let viewModelWith: (([Word]?) -> Void) = { words in
                 wordService = WordServiceMock()
                 wordService.wordsForTest = words
-                viewModel = ViewModel(wordService: wordService)
+                viewModel = ViewModel(wordService: wordService,
+                                      textService: textService)
             }
             
             describe("startAnimating") {
@@ -215,6 +217,35 @@ class ViewModelSpec: QuickSpec {
                     expect(actual) == "0"
                 }
                 
+            }
+            
+            describe("showAlert") {
+                it("shows an alert when a player wins") {
+                    let expected = "uno"
+                    let word = wordForString(expected)
+                    viewModelWith([word])
+                    var actual: UIAlertController? = nil
+                    viewModel.showAlert.drive(onNext: {
+                        actual = $0
+                    }).disposed(by: bag)
+                    viewModel.viewWillAppear.onNext(())
+                    viewModel.rightBuzzerTapped.onNext(())
+                    expect(actual).toEventuallyNot(beNil())
+                }
+                it("shows an alert with the right texts when a player wins") {
+                    let expected = "uno"
+                    let word = wordForString(expected)
+                    viewModelWith([word])
+                    var actual: UIAlertController? = nil
+                    viewModel.showAlert.drive(onNext: {
+                        actual = $0
+                    }).disposed(by: bag)
+                    viewModel.viewWillAppear.onNext(())
+                    viewModel.rightBuzzerTapped.onNext(())
+                    expect(actual).toEventuallyNot(beNil())
+                    expect(actual?.title) == textService.alertTitle
+                    expect(actual?.message) == textService.alertMessage(withName: Player.trailing.description)
+                }
             }
             
         }

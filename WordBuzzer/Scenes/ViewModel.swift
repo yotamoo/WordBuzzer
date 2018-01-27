@@ -15,8 +15,8 @@ enum Player: CustomStringConvertible {
     case leading, trailing
     var description: String {
         switch self {
-        case .leading: return "leading"
-        case .trailing: return "trailing"
+        case .leading: return "Player 1"
+        case .trailing: return "Player 2"
         }
     }
 }
@@ -33,7 +33,7 @@ protocol ViewModeling {
     var centerLabelText: Driver<String?> { get }
     var leftPlayerScore: Driver<String?> { get }
     var rightPlayerScore: Driver<String?> { get }
-    var showAlert: Observable<UIAlertController> { get }
+    var showAlert: Driver<UIAlertController> { get }
     
 }
 
@@ -61,9 +61,9 @@ class ViewModel: ViewModeling {
     let centerLabelText: Driver<String?>
     let leftPlayerScore: Driver<String?>
     let rightPlayerScore: Driver<String?>
-    let showAlert: Observable<UIAlertController>
+    let showAlert: Driver<UIAlertController>
     
-    init(wordService: WordServicing) {
+    init(wordService: WordServicing, textService: ViewModelTexts) {
         
         self.viewWillAppear = self._viewWillAppear.asObserver()
         self.leftBuzzerTapped = leadingBuzzer.asObserver()
@@ -79,7 +79,7 @@ class ViewModel: ViewModeling {
             .map { String($0) }
             .asDriver(onErrorJustReturn: nil)
         
-        self.showAlert = self._showAlert.asObservable()
+        self.showAlert = self._showAlert.asDriver(onErrorDriveWith: Driver.never())
         self.startAnimating = self._startAnimating.asObservable()
         self.centerLabelText = self._centerLabelText.asDriver(onErrorJustReturn: nil)
         
@@ -157,11 +157,12 @@ class ViewModel: ViewModeling {
         let controllerTapped = PublishSubject<Void>()
         anyWins
             .map { (winner: Player) -> UIAlertController in
-                let alert = UIAlertController(title: "Win!",
-                                              message: "\(winner) wins!!!",
+                let message = textService.alertMessage(withName: winner.description)
+                let alert = UIAlertController(title: textService.alertTitle,
+                                              message: message,
                     preferredStyle: .alert)
                 
-                let action = UIAlertAction(title: "Continue",
+                let action = UIAlertAction(title: textService.alertButton,
                                            style: .default)
                 { _ in
                     controllerTapped.onNext(())
