@@ -18,8 +18,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var leftScoreLabel: UILabel!
     @IBOutlet weak var rightScoreLabel: UILabel!
     
-    private var wordLabel: UILabel?
-    private var viewModel: ViewModeling!
+    var viewModel: ViewModeling!
+    var wordLabel: UILabel?
+    
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
