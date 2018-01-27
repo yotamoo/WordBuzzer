@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6911A5F85C1E7B0A0DC9CF75518B8523"
+               BlueprintIdentifier = "AC96A2E8E6B37A5B7F647EEBC5005A77"
                BuildableName = "Pods_WordBuzzer.framework"
                BlueprintName = "Pods-WordBuzzer"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6911A5F85C1E7B0A0DC9CF75518B8523"
+            BlueprintIdentifier = "AC96A2E8E6B37A5B7F647EEBC5005A77"
             BuildableName = "Pods_WordBuzzer.framework"
             BlueprintName = "Pods-WordBuzzer"
             ReferencedContainer = "container:Pods.xcodeproj">

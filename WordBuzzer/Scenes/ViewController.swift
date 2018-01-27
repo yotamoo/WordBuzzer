@@ -26,12 +26,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let bundle = Bundle(for: type(of: self))
-        let wordService = WordFileService(fileName: "words", bundle: bundle)
-        let textService = TextService()
-        self.viewModel = ViewModel(wordService: wordService,
-                                   textService: textService)
-        
         viewModel
             .centerLabelText
             .drive(self.centerLabel.rx.text)

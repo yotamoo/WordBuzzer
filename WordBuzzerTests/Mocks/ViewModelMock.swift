@@ -33,6 +33,11 @@ class ViewModelMock: ViewModeling {
     let _showAlert = PublishSubject<UIAlertController>()
     let showAlert: Driver<UIAlertController>
     
+    var leftBuzzerTappedInTest = false
+    var rightBuzzerTappedInTest = false
+    
+    private let bag = DisposeBag()
+    
     init() {
         self.viewWillAppear = self._viewWillAppear.asObserver()
         self.leftBuzzerTapped = self._leftBuzzerTapped.asObserver()
@@ -47,6 +52,21 @@ class ViewModelMock: ViewModeling {
             .asDriver(onErrorDriveWith: Driver.never())
         self.showAlert = self._showAlert
             .asDriver(onErrorDriveWith: Driver.never())
+        
+        self._leftBuzzerTapped
+            .asObservable()
+            .subscribe(onNext: {
+                self.leftBuzzerTappedInTest = true
+            })
+            .disposed(by: bag)
+        
+        self._rightBuzzerTapped
+            .asObservable()
+            .subscribe(onNext: {
+                self.rightBuzzerTappedInTest = true
+            })
+            .disposed(by: bag)
+        
     }
     
 }

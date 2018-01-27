@@ -9,6 +9,8 @@ target 'WordBuzzer' do
   pod 'RxCocoa'
   pod 'RxSwift'
   pod 'RxOptional'
+  pod 'Swinject', '~> 2.1'
+  pod 'SwinjectStoryboard', '~> 1.1'
   pod 'Reveal-SDK', :configurations => ['Debug']
 
   target 'WordBuzzerTests' do
