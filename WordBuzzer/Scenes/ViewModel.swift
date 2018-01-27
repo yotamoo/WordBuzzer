@@ -15,8 +15,8 @@ enum Player: CustomStringConvertible {
     case leading, trailing
     var description: String {
         switch self {
-        case .leading: return "Player 1"
-        case .trailing: return "Player 2"
+        case .leading: return "Red player"
+        case .trailing: return "Blue player"
         }
     }
 }

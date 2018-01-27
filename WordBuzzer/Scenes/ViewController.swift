@@ -114,13 +114,16 @@ private extension ViewController {
         self.wordLabel?.removeFromSuperview()
         let label = UILabel()
         label.text = word.spanish
+        label.font = label.font.withSize(34)
         label.sizeToFit()
-        label.center = CGPoint(x: -label.frame.width, y: 20)
+        label.center = CGPoint(x: -label.frame.width,
+                               y: self.centerLabel.frame.midY / 2)
         self.view.addSubview(label)
         self.wordLabel = label
         
         UIView.animate(withDuration: 4) {
-            label.center = CGPoint(x: self.view.bounds.maxX, y: 10)
+            label.center = CGPoint(x: self.view.bounds.maxX,
+                                   y: self.centerLabel.frame.midY / 2)
         }
         
     }
